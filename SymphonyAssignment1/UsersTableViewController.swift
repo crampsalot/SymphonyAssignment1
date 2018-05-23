@@ -11,12 +11,36 @@ import UIKit
 class UsersTableViewController: UITableViewController {
     let cellID = "UserCell"
     
+    var allUsers: [UAPUser] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        UsersAndPostsService.sharedInstance.getUsers { (users, errorString) in
+            if let errorString = errorString {
+                DispatchQueue.main.async {
+                    print(errorString)
+                }
+                
+                return
+            }
+            
+            if let users = users {
+                print("Users count: \(users.count)")
+                self.allUsers = users
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return allUsers.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -26,26 +50,26 @@ class UsersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID)!
+        let oneUser = allUsers[indexPath.row]
         
         // Name
-        if let label = cell.viewWithTag(1) as? UILabel {
-            label.text = "Isa Hashim"
+        if let label = cell.viewWithTag(1) as? UILabel, let name = oneUser.name {
+            label.text = name
         }
         
         // Username
-        if let label = cell.viewWithTag(2) as? UILabel {
-            let username = "crampsalot"
+        if let label = cell.viewWithTag(2) as? UILabel, let username = oneUser.username {
             label.text = username
         }
         
         // Email
-        if let label = cell.viewWithTag(3) as? UILabel {
-            label.text = "isa@crampsalot.com"
+        if let label = cell.viewWithTag(3) as? UILabel, let email = oneUser.email {
+            label.text = email
         }
         
         // Phone
-        if let label = cell.viewWithTag(4) as? UILabel {
-            label.text = "408-111-2222"
+        if let label = cell.viewWithTag(4) as? UILabel, let phone = oneUser.phone {
+            label.text = phone
         }
         
         return cell

@@ -9,7 +9,8 @@
 import Foundation
 
 /*
- * One user:
+ 
+ One user:
  
  {
   "id": 1,
@@ -33,6 +34,15 @@ import Foundation
    "catchPhrase": "Multi-layered client-server neural-net",
    "bs": "harness real-time e-markets"
   }
+ }
+ 
+ One post:
+ 
+ {
+  "userId": 1,
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
  }
  
  */
@@ -67,12 +77,22 @@ struct UAPUser: Decodable {
     let company: UAPCompany?
 }
 
+struct UAPPost: Decodable {
+    let userId: Int?
+    let id: Int?
+    let title: String?
+    let body: String?
+}
+
 class UsersAndPostsService {
     private let USERS_URL_STRING = "https://jsonplaceholder.typicode.com/users"
-    
+    private let USER_ID_TOKEN = "USER_ID_TOKEN"
+    private let POSTS_URL_STRING: String
+
     static let sharedInstance = UsersAndPostsService()
     
     private init() {
+        POSTS_URL_STRING = "https://jsonplaceholder.typicode.com/posts?userId=\(USER_ID_TOKEN)"
     }
     
     func getUsers(completion: ((_ users: [UAPUser]?, _ errorString: String?) -> Void)?) {
@@ -113,8 +133,53 @@ class UsersAndPostsService {
             }.resume()
     }
     
+    func getPosts(forUserId userId: Int, completion: ((_ posts: [UAPPost]?, _ errorString: String?) -> Void)?) {
+        let theURLString = POSTS_URL_STRING.replacingOccurrences(of: USER_ID_TOKEN, with: "\(userId)")
+        print("Getting posts with URL: ", theURLString)
+        guard let url = URL(string: theURLString) else {
+            completion?(nil, "Error initializing url: " + theURLString)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let httpurlResponse = response as? HTTPURLResponse else {
+                completion?(nil, "Response type is not HTTPURLResponse")
+                return
+            }
+            
+            guard httpurlResponse.statusCode == 200 else {
+                completion?(nil, "HTTP status code is: \(httpurlResponse.statusCode). It should be 200")
+                return
+            }
+            
+            guard let data = data else {
+                completion?(nil, "Data received back is nil")
+                return
+            }
+            
+            do {
+                if let posts = try self.getPostsFromJSON(jsonData: data) {
+                    completion?(posts, nil)
+                }
+            } catch let error as NSError {
+                var errorString = "JSON parsing error: \(error)"
+                if let jsonDataAsString = String(data: data, encoding: .utf8) {
+                    errorString += "\nJSON: " + jsonDataAsString
+                }
+                
+                completion?(nil, errorString)
+            }
+            
+            }.resume()
+    }
+    
     private func getUsersFromJSON(jsonData: Data) throws -> [UAPUser]? {
         let users = try JSONDecoder().decode([UAPUser].self, from: jsonData)
         return users
+    }
+    
+    private func getPostsFromJSON(jsonData: Data) throws -> [UAPPost]? {
+        let posts = try JSONDecoder().decode([UAPPost].self, from: jsonData)
+        return posts
     }
 }

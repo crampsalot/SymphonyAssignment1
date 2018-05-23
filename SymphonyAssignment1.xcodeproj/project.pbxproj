@@ -15,6 +15,7 @@
 		4AAC5E9020B530AB0051EDA8 /* SymphonyAssignment1UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC5E8F20B530AB0051EDA8 /* SymphonyAssignment1UITests.swift */; };
 		4AAC5E9F20B5381A0051EDA8 /* UsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC5E9E20B5381A0051EDA8 /* UsersTableViewController.swift */; };
 		4AAC5EA120B5435A0051EDA8 /* UsersAndPostsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC5EA020B5435A0051EDA8 /* UsersAndPostsService.swift */; };
+		4AAC5EA320B552780051EDA8 /* PostsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC5EA220B552780051EDA8 /* PostsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		4AAC5E9120B530AB0051EDA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4AAC5E9E20B5381A0051EDA8 /* UsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewController.swift; sourceTree = "<group>"; };
 		4AAC5EA020B5435A0051EDA8 /* UsersAndPostsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersAndPostsService.swift; sourceTree = "<group>"; };
+		4AAC5EA220B552780051EDA8 /* PostsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				4AAC5E9D20B536630051EDA8 /* Storyboards */,
 				4AAC5E6F20B530AB0051EDA8 /* AppDelegate.swift */,
 				4AAC5E9E20B5381A0051EDA8 /* UsersTableViewController.swift */,
+				4AAC5EA220B552780051EDA8 /* PostsTableViewController.swift */,
 				4AAC5EA020B5435A0051EDA8 /* UsersAndPostsService.swift */,
 				4AAC5E7B20B530AB0051EDA8 /* Info.plist */,
 				4AAC5E7620B530AB0051EDA8 /* Assets.xcassets */,
@@ -271,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AAC5E7020B530AB0051EDA8 /* AppDelegate.swift in Sources */,
+				4AAC5EA320B552780051EDA8 /* PostsTableViewController.swift in Sources */,
 				4AAC5EA120B5435A0051EDA8 /* UsersAndPostsService.swift in Sources */,
 				4AAC5E9F20B5381A0051EDA8 /* UsersTableViewController.swift in Sources */,
 			);

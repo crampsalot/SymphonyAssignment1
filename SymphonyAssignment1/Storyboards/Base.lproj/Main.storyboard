@@ -74,10 +74,64 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Users" id="nlI-0S-vnd"/>
+                    <connections>
+                        <segue destination="Uuf-9H-llc" kind="show" identifier="ShowPosts" id="leg-On-4ao"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hoe-aT-QPW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1424.8" y="51.724137931034484"/>
+        </scene>
+        <!--Posts-->
+        <scene sceneID="yRe-jG-5mc">
+            <objects>
+                <tableViewController title="Posts" id="Uuf-9H-llc" customClass="PostsTableViewController" customModule="SymphonyAssignment1" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="8NQ-Ii-F5O">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="206" id="DUR-sa-ypw">
+                                <rect key="frame" x="0.0" y="28" width="375" height="206"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DUR-sa-ypw" id="iPy-T2-aj6">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="205.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" editable="NO" text="Body" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exr-3f-rZA">
+                                            <rect key="frame" x="4" y="40" width="367" height="162"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iep-Ts-r89">
+                                            <rect key="frame" x="20" y="15" width="335" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Iep-Ts-r89" firstAttribute="leading" secondItem="iPy-T2-aj6" secondAttribute="leading" constant="20" id="35V-Ns-ug4"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Iep-Ts-r89" secondAttribute="trailing" constant="4" id="5wj-2q-cbU"/>
+                                        <constraint firstItem="exr-3f-rZA" firstAttribute="leading" secondItem="iPy-T2-aj6" secondAttribute="leading" constant="4" id="ZPz-rG-eoe"/>
+                                        <constraint firstItem="exr-3f-rZA" firstAttribute="top" secondItem="Iep-Ts-r89" secondAttribute="bottom" constant="4" id="bP7-Fv-VTE"/>
+                                        <constraint firstAttribute="trailing" secondItem="exr-3f-rZA" secondAttribute="trailing" constant="4" id="soP-Fj-GOO"/>
+                                        <constraint firstAttribute="bottom" secondItem="exr-3f-rZA" secondAttribute="bottom" constant="4" id="tJq-7Z-5qN"/>
+                                        <constraint firstItem="Iep-Ts-r89" firstAttribute="top" secondItem="iPy-T2-aj6" secondAttribute="topMargin" constant="4" id="xy7-Y7-5qG"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Uuf-9H-llc" id="GDL-vC-Ggp"/>
+                            <outlet property="delegate" destination="Uuf-9H-llc" id="4to-g8-8KJ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BtG-Hk-ih5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2290.4000000000001" y="47.226386806596707"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="I4M-Aw-tV0">

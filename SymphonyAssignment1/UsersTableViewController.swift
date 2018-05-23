@@ -10,8 +10,10 @@ import UIKit
 
 class UsersTableViewController: UITableViewController {
     let cellID = "UserCell"
+    let SEGUE_SHOW_POSTS = "ShowPosts"
     
     var allUsers: [UAPUser] = []
+    var rowPressed = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,5 +75,55 @@ class UsersTableViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let oneUser = allUsers[indexPath.row]
+        
+        if let name = oneUser.name {
+            print("User \(name) selected")
+        }
+        
+//        if let userId = oneUser.id {
+//            UsersAndPostsService.sharedInstance.getPosts(forUserId: userId, completion: { (posts, errorString) in
+//                if let errorString = errorString {
+//                    DispatchQueue.main.async {
+//                        print(errorString)
+//                    }
+//                    
+//                    return
+//                }
+//                
+//                if let posts = posts {
+//                    print("Number of posts: \(posts.count)")
+//                    print(posts)
+//                }
+//
+//            })
+//        }
+        
+        rowPressed = indexPath.row
+        
+        performSegue(withIdentifier: SEGUE_SHOW_POSTS, sender: self)
+    }
+    
+    //MARK: - Segue prep
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        guard let segueId = segue.identifier else {
+            return
+        }
+        
+        switch segueId {
+        case SEGUE_SHOW_POSTS:
+            if let vc = segue.destination as? PostsTableViewController {
+                let oneUser = allUsers[rowPressed]
+                vc.user = oneUser
+            }
+            
+        default:
+            print("BLEScanner: Unknown segue")
+        }
     }
 }

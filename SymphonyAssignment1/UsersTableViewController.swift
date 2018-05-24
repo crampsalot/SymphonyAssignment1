@@ -9,19 +9,34 @@
 import UIKit
 
 class UsersTableViewController: UITableViewController {
-    let cellID = "UserCell"
-    let SEGUE_SHOW_POSTS = "ShowPosts"
+    private let cellID = "UserCell"
+    private let SEGUE_SHOW_POSTS = "ShowPosts"
     
-    var allUsers: [UAPUser] = []
-    var rowPressed = 0
+    private var allUsers: [UAPUser] = []
+    private var rowPressed = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        loadUsers()
+    }
+    
+    // Start loading users
+    private func loadUsers() {
         UsersAndPostsService.sharedInstance.getUsers { (users, errorString) in
             if let errorString = errorString {
                 DispatchQueue.main.async {
-                    print(errorString)
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: "Error", message:
+                            "Failed to obtain users: \(errorString)", preferredStyle: UIAlertControllerStyle.alert)
+                        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
                 
                 return
@@ -30,7 +45,8 @@ class UsersTableViewController: UITableViewController {
             if let users = users {
                 print("Users count: \(users.count)")
                 self.allUsers = users
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [unowned self] in
+                    // Update tableview with list of users
                     self.tableView.reloadData()
                 }
             }
@@ -84,24 +100,6 @@ class UsersTableViewController: UITableViewController {
             print("User \(name) selected")
         }
         
-//        if let userId = oneUser.id {
-//            UsersAndPostsService.sharedInstance.getPosts(forUserId: userId, completion: { (posts, errorString) in
-//                if let errorString = errorString {
-//                    DispatchQueue.main.async {
-//                        print(errorString)
-//                    }
-//                    
-//                    return
-//                }
-//                
-//                if let posts = posts {
-//                    print("Number of posts: \(posts.count)")
-//                    print(posts)
-//                }
-//
-//            })
-//        }
-        
         rowPressed = indexPath.row
         
         performSegue(withIdentifier: SEGUE_SHOW_POSTS, sender: self)
@@ -119,11 +117,12 @@ class UsersTableViewController: UITableViewController {
         case SEGUE_SHOW_POSTS:
             if let vc = segue.destination as? PostsTableViewController {
                 let oneUser = allUsers[rowPressed]
+                // Set the user to get posts for in PostsTableViewController
                 vc.user = oneUser
             }
             
         default:
-            print("BLEScanner: Unknown segue")
+            print("Unknown segue")
         }
     }
 }

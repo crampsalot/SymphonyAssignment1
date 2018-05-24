@@ -8,9 +8,12 @@
 
 import Foundation
 
+// Singleton class containing method to fetch list of users and list of posts
+// for a specific user.
+
 /*
- 
- One user:
+ * Sample JSON for one user:
+ *
  
  {
   "id": 1,
@@ -36,7 +39,9 @@ import Foundation
   }
  }
  
- One post:
+ *
+ * Sample JSON for one post:
+ *
  
  {
   "userId": 1,
@@ -44,14 +49,20 @@ import Foundation
   "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
   "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
  }
- 
+
  */
 
+// Data structures to represent JSON elements
+// Optionals are used to prevent errors in case any JSON properties
+// were missing from REST API eg if "website" was missing from a user JSON.
+
+// Geo data structure - used in address
 struct UAPGeo: Decodable {
     let lat: String?
     let lng: String?
 }
 
+// Address data structure - used in user
 struct UAPAddress: Decodable {
     let street: String?
     let suite: String?
@@ -60,12 +71,14 @@ struct UAPAddress: Decodable {
     let geo: UAPGeo?
 }
 
+// Company data structure - used in user
 struct UAPCompany: Decodable {
     let name: String?
     let catchPhrase: String?
     let bs: String?
 }
 
+// User data structure
 struct UAPUser: Decodable {
     let id: Int?
     let name: String?
@@ -77,6 +90,7 @@ struct UAPUser: Decodable {
     let company: UAPCompany?
 }
 
+// Post data structure
 struct UAPPost: Decodable {
     let userId: Int?
     let id: Int?
@@ -84,20 +98,27 @@ struct UAPPost: Decodable {
     let body: String?
 }
 
+// This singleton class contains 2 methods:
+// - getUsers()
+// - getPosts()
+//
 class UsersAndPostsService {
-    private let USERS_URL_STRING = "https://jsonplaceholder.typicode.com/users"
-    private let USER_ID_TOKEN = "USER_ID_TOKEN"
-    private let POSTS_URL_STRING: String
+    // URL constants
+    
+    private static let USERS_URL_STRING = "https://jsonplaceholder.typicode.com/users"
+    
+    // POSTS_URL_STRING contains a token that is replaced with a userId.
+    // This was done instead of merely appending a userId to a post URL
+    // to protect against the case where the URL could grow to contain
+    // more parameters and the userId parameter may not be the last one.
+    private static let USER_ID_TOKEN = "USER_ID_TOKEN"
+    private static let POSTS_URL_STRING = "https://jsonplaceholder.typicode.com/posts?userId=\(USER_ID_TOKEN)"
 
     static let sharedInstance = UsersAndPostsService()
     
-    private init() {
-        POSTS_URL_STRING = "https://jsonplaceholder.typicode.com/posts?userId=\(USER_ID_TOKEN)"
-    }
-    
     func getUsers(completion: ((_ users: [UAPUser]?, _ errorString: String?) -> Void)?) {
-        guard let url = URL(string: USERS_URL_STRING) else {
-            completion?(nil, "Error initializing url: " + USERS_URL_STRING)
+        guard let url = URL(string: UsersAndPostsService.USERS_URL_STRING) else {
+            completion?(nil, "Error initializing url: " + UsersAndPostsService.USERS_URL_STRING)
             return
         }
         
@@ -134,7 +155,7 @@ class UsersAndPostsService {
     }
     
     func getPosts(forUserId userId: Int, completion: ((_ posts: [UAPPost]?, _ errorString: String?) -> Void)?) {
-        let theURLString = POSTS_URL_STRING.replacingOccurrences(of: USER_ID_TOKEN, with: "\(userId)")
+        let theURLString = UsersAndPostsService.POSTS_URL_STRING.replacingOccurrences(of: UsersAndPostsService.USER_ID_TOKEN, with: "\(userId)")
         print("Getting posts with URL: ", theURLString)
         guard let url = URL(string: theURLString) else {
             completion?(nil, "Error initializing url: " + theURLString)
@@ -173,11 +194,13 @@ class UsersAndPostsService {
             }.resume()
     }
     
+    // Extract/decode array of users from data obtained from users service
     private func getUsersFromJSON(jsonData: Data) throws -> [UAPUser]? {
         let users = try JSONDecoder().decode([UAPUser].self, from: jsonData)
         return users
     }
     
+    // Extract/decode array of posts from data obtained from posts service
     private func getPostsFromJSON(jsonData: Data) throws -> [UAPPost]? {
         let posts = try JSONDecoder().decode([UAPPost].self, from: jsonData)
         return posts

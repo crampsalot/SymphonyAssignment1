@@ -91,34 +91,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="206" id="DUR-sa-ypw">
-                                <rect key="frame" x="0.0" y="28" width="375" height="206"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="180" id="DUR-sa-ypw">
+                                <rect key="frame" x="0.0" y="28" width="375" height="180"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DUR-sa-ypw" id="iPy-T2-aj6">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="205.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="179.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" editable="NO" text="Body" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exr-3f-rZA">
-                                            <rect key="frame" x="4" y="40" width="367" height="162"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" editable="NO" text="Body" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exr-3f-rZA">
+                                            <rect key="frame" x="20" y="29" width="335" height="146.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iep-Ts-r89">
-                                            <rect key="frame" x="20" y="15" width="335" height="21"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iep-Ts-r89">
+                                            <rect key="frame" x="20" y="4" width="335" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Iep-Ts-r89" firstAttribute="leading" secondItem="iPy-T2-aj6" secondAttribute="leading" constant="20" id="35V-Ns-ug4"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Iep-Ts-r89" secondAttribute="trailing" constant="4" id="5wj-2q-cbU"/>
-                                        <constraint firstItem="exr-3f-rZA" firstAttribute="leading" secondItem="iPy-T2-aj6" secondAttribute="leading" constant="4" id="ZPz-rG-eoe"/>
-                                        <constraint firstItem="exr-3f-rZA" firstAttribute="top" secondItem="Iep-Ts-r89" secondAttribute="bottom" constant="4" id="bP7-Fv-VTE"/>
-                                        <constraint firstAttribute="trailing" secondItem="exr-3f-rZA" secondAttribute="trailing" constant="4" id="soP-Fj-GOO"/>
-                                        <constraint firstAttribute="bottom" secondItem="exr-3f-rZA" secondAttribute="bottom" constant="4" id="tJq-7Z-5qN"/>
-                                        <constraint firstItem="Iep-Ts-r89" firstAttribute="top" secondItem="iPy-T2-aj6" secondAttribute="topMargin" constant="4" id="xy7-Y7-5qG"/>
+                                        <constraint firstItem="Iep-Ts-r89" firstAttribute="leading" secondItem="iPy-T2-aj6" secondAttribute="leadingMargin" constant="4" id="9yI-Di-azW"/>
+                                        <constraint firstItem="exr-3f-rZA" firstAttribute="top" secondItem="Iep-Ts-r89" secondAttribute="bottom" constant="4" id="CnL-MM-KbL"/>
+                                        <constraint firstItem="Iep-Ts-r89" firstAttribute="top" secondItem="iPy-T2-aj6" secondAttribute="top" constant="4" id="HId-ll-bw1"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Iep-Ts-r89" secondAttribute="trailing" constant="4" id="OCt-9K-aTO"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="exr-3f-rZA" secondAttribute="trailing" constant="4" id="bAz-Cd-Rs0"/>
+                                        <constraint firstAttribute="bottom" secondItem="exr-3f-rZA" secondAttribute="bottom" constant="4" id="k90-AH-T1g"/>
+                                        <constraint firstItem="exr-3f-rZA" firstAttribute="leading" secondItem="iPy-T2-aj6" secondAttribute="leadingMargin" constant="4" id="pU4-k7-K3b"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>

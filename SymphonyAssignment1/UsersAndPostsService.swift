@@ -213,7 +213,7 @@ class UsersAndPostsService {
     //   completionHandler(image: UIImage?, userName: String, errorString)
     // The user name is handed back in the completion handler to help
     // the storing of the image in a cache (eg using it as a key).
-    func getImage(forUsername userName: String, completion: ((_ image: UIImage?, _ userName: String, _ errorString: String?) -> Void)?) {
+    func getImage(forUsername userName: String, userIndex: Int, completion: ((_ image: UIImage?, _ userName: String, _ userIndex: Int, _ errorString: String?) -> Void)?) {
         // Default name in case percent encoding fails
         var percentEncodedUserName = "DefaultUserName"
         
@@ -226,28 +226,28 @@ class UsersAndPostsService {
         let theURLString = UsersAndPostsService.IMAGE_URL_STRING.replacingOccurrences(of: UsersAndPostsService.USER_NAME_TOKEN, with: "\(percentEncodedUserName)")
         
         guard let url = URL(string: theURLString) else {
-            completion?(nil, userName, "Error initializing url: " + theURLString)
+            completion?(nil, userName, userIndex, "Error initializing url: " + theURLString)
             return
         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let httpurlResponse = response as? HTTPURLResponse else {
-                completion?(nil, userName, "Response type is not HTTPURLResponse")
+                completion?(nil, userName, userIndex, "Response type is not HTTPURLResponse")
                 return
             }
             
             guard httpurlResponse.statusCode == 200 else {
-                completion?(nil, userName, "HTTP status code is: \(httpurlResponse.statusCode). It should be 200")
+                completion?(nil, userName, userIndex, "HTTP status code is: \(httpurlResponse.statusCode). It should be 200")
                 return
             }
             
             guard let data = data else {
-                completion?(nil, userName, "Data received back is nil")
+                completion?(nil, userName, userIndex, "Data received back is nil")
                 return
             }
             
             let image = UIImage(data: data)
-            completion?(image, userName, nil)
+            completion?(image, userName, userIndex, nil)
             
             }.resume()
     }

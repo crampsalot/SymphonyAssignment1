@@ -87,7 +87,7 @@ class UsersTableViewController: BusyLoadingTableViewController {
                 imageView.layer.cornerRadius = 8
                 imageView.clipsToBounds = true
             } else {
-                loadImage(forUserName: username)
+                loadImage(forUserName: username, andIndex: indexPath.row)
             }
         }
         
@@ -95,12 +95,6 @@ class UsersTableViewController: BusyLoadingTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let oneUser = allUsers[indexPath.row]
-        
-        if let name = oneUser.name {
-            print("User \(name) selected")
-        }
-        
         rowPressed = indexPath.row
         
         performSegue(withIdentifier: SEGUE_SHOW_POSTS, sender: self)
@@ -164,8 +158,9 @@ class UsersTableViewController: BusyLoadingTableViewController {
     }
     
     // Start fetching image for user
-    private func loadImage(forUserName userName: String) {
-        UsersAndPostsService.sharedInstance.getImage(forUsername: userName) { (image, userName, errorString) in
+    private func loadImage(forUserName userName: String, andIndex userIndex: Int) {
+        UsersAndPostsService.sharedInstance.getImage(forUsername: userName, userIndex: userIndex) {
+                    (image, userName, userIndex, errorString) in
             if let errorString = errorString {
                 DispatchQueue.main.async {
                     let alertController = UIAlertController(title: "Error", message:
@@ -184,32 +179,15 @@ class UsersTableViewController: BusyLoadingTableViewController {
                 // Store it in cache
                 self.userImagesCache[userName] = image
                 
-                // Find index of user in table so that we can
-                // reload just that row and not the entire
-                // table
-                if let row = self.findIndex(forUserName: userName) {
-                    let indexPath = IndexPath(row: row, section: 0)
+                // 'userIndex' passed in is the index/row of the user in the table
+                // Use this to refresh just that one row and not the entire
+                // table.
+                if ((userIndex >= 0) && (userIndex < self.allUsers.count)) {
+                    let indexPath = IndexPath(row: userIndex, section: 0)
                     self.tableView.reloadRows(at: [indexPath], with: .none)
                 }
+                
             }
         }
     }
-    
-    // Find index of user with given username
-    // Can't use filter method here since we want the index
-    private func findIndex(forUserName userName: String) -> Int? {
-        for i in 0..<allUsers.count {
-            let user = allUsers[i]
-            if (user.username == userName) {
-                return i
-            }
-        }
-        
-        return nil
-    }
-    
-    //MARK: - TODO
-    // Add row/index param to loadImages so that it can be passed back in
-    // completion handler - this will get rid of findIndex()
-    
 }

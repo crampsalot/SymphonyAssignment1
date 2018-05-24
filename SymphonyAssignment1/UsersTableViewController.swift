@@ -8,15 +8,19 @@
 
 import UIKit
 
-class UsersTableViewController: UITableViewController {
+// View controller for list of Users
+
+class UsersTableViewController: BusyLoadingTableViewController {
     private let cellID = "UserCell"
     private let SEGUE_SHOW_POSTS = "ShowPosts"
     
     // Array of users fetched by loadUsers()
     private var allUsers: [UAPUser] = []
     
-    // image cache, key = userName
+    // Very simple image cache - images displayed for each user
+    // key = userName
     // image fetch done in loadImage()
+    // Size of cache not checked, no images are purged
     private var userImagesCache: [String:UIImage?] = [:]
     
     // used to determine which user to pass on to PostsTableViewController
@@ -28,7 +32,8 @@ class UsersTableViewController: UITableViewController {
         
         // Fetch users when view is loaded
         // If we expect the users list to change, then this should be
-        // called as a result of some trigger/action
+        // called as a result of some trigger/action or even in
+        // viewWillAppear()
         loadUsers()
     }
     
@@ -126,7 +131,13 @@ class UsersTableViewController: UITableViewController {
     
     // Start loading users
     private func loadUsers() {
+        showBusyLoading()
+        
         UsersAndPostsService.sharedInstance.getUsers { (users, errorString) in
+            DispatchQueue.main.async {
+                self.hideBusyLoading()
+            }
+            
             if let errorString = errorString {
                 DispatchQueue.main.async {
                     let alertController = UIAlertController(title: "Error", message:
@@ -140,8 +151,6 @@ class UsersTableViewController: UITableViewController {
             }
             
             if let users = users {
-                print("Users count: \(users.count)")
-                
                 // set list of users
                 // empty image cache
                 self.allUsers = users
@@ -180,7 +189,6 @@ class UsersTableViewController: UITableViewController {
                 // table
                 if let row = self.findIndex(forUserName: userName) {
                     let indexPath = IndexPath(row: row, section: 0)
-                    print("Reloading row: \(userName)")
                     self.tableView.reloadRows(at: [indexPath], with: .none)
                 }
             }
@@ -199,4 +207,9 @@ class UsersTableViewController: UITableViewController {
         
         return nil
     }
+    
+    //MARK: - TODO
+    // Add row/index param to loadImages so that it can be passed back in
+    // completion handler - this will get rid of findIndex()
+    
 }

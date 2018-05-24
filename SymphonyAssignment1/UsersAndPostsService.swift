@@ -125,6 +125,9 @@ class UsersAndPostsService {
     
     static let sharedInstance = UsersAndPostsService()
     
+    // Fetch list of users
+    // Results will be in completion handler:
+    //   completionHandler(users: [UAPUser]?, errorString)
     func getUsers(completion: ((_ users: [UAPUser]?, _ errorString: String?) -> Void)?) {
         guard let url = URL(string: UsersAndPostsService.USERS_URL_STRING) else {
             completion?(nil, "Error initializing url: " + UsersAndPostsService.USERS_URL_STRING)
@@ -163,9 +166,11 @@ class UsersAndPostsService {
             }.resume()
     }
     
+    // Fetch list of posts for a given user ID
+    // Results will be in completion handler:
+    //   completionHandler(posts: [UAPPost]?, errorString)
     func getPosts(forUserId userId: Int, completion: ((_ posts: [UAPPost]?, _ errorString: String?) -> Void)?) {
         let theURLString = UsersAndPostsService.POSTS_URL_STRING.replacingOccurrences(of: UsersAndPostsService.USER_ID_TOKEN, with: "\(userId)")
-        print("Getting posts with URL: ", theURLString)
         guard let url = URL(string: theURLString) else {
             completion?(nil, "Error initializing url: " + theURLString)
             return
@@ -203,6 +208,11 @@ class UsersAndPostsService {
             }.resume()
     }
     
+    // Get user image for a given user name
+    // Result will be in completion handler:
+    //   completionHandler(image: UIImage?, userName: String, errorString)
+    // The user name is handed back in the completion handler to help
+    // the storing of the image in a cache (eg using it as a key).
     func getImage(forUsername userName: String, completion: ((_ image: UIImage?, _ userName: String, _ errorString: String?) -> Void)?) {
         // Default name in case percent encoding fails
         var percentEncodedUserName = "DefaultUserName"
@@ -215,7 +225,6 @@ class UsersAndPostsService {
         
         let theURLString = UsersAndPostsService.IMAGE_URL_STRING.replacingOccurrences(of: UsersAndPostsService.USER_NAME_TOKEN, with: "\(percentEncodedUserName)")
         
-        //        print("Getting image with URL: ", theURLString)
         guard let url = URL(string: theURLString) else {
             completion?(nil, userName, "Error initializing url: " + theURLString)
             return

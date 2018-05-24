@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BusyLoadingView" customModule="SymphonyAssignment1" customModuleProvider="target">
+            <connections>
+                <outlet property="activityIndicator" destination="T3u-Yk-V7R" id="Dz1-aT-M46"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="gjH-oJ-aFj"/>
+                <outlet property="label" destination="bo6-nT-aVb" id="8ua-1p-BfV"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bub-Oc-T56">
+                    <rect key="frame" x="136" y="319.5" width="103" height="28"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="T3u-Yk-V7R">
+                            <rect key="frame" x="2" y="4" width="20" height="20"/>
+                        </activityIndicatorView>
+                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bo6-nT-aVb">
+                            <rect key="frame" x="26" y="3.5" width="75" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="T3u-Yk-V7R" firstAttribute="centerY" secondItem="bub-Oc-T56" secondAttribute="centerY" id="11T-4r-Tdm"/>
+                        <constraint firstItem="bo6-nT-aVb" firstAttribute="leading" secondItem="T3u-Yk-V7R" secondAttribute="trailing" constant="4" id="4tC-2c-1MW"/>
+                        <constraint firstItem="T3u-Yk-V7R" firstAttribute="leading" secondItem="bub-Oc-T56" secondAttribute="leading" constant="2" id="ASi-ol-XqV"/>
+                        <constraint firstItem="T3u-Yk-V7R" firstAttribute="top" secondItem="bub-Oc-T56" secondAttribute="top" constant="4" id="X3a-VL-jjG"/>
+                        <constraint firstItem="bo6-nT-aVb" firstAttribute="centerY" secondItem="bub-Oc-T56" secondAttribute="centerY" id="gem-Tx-7P7"/>
+                        <constraint firstAttribute="bottom" secondItem="T3u-Yk-V7R" secondAttribute="bottom" constant="4" id="jrV-cr-tEI"/>
+                        <constraint firstAttribute="trailing" secondItem="bo6-nT-aVb" secondAttribute="trailing" constant="2" id="ucN-Jo-4y0"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="bub-Oc-T56" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="70u-il-GVC"/>
+                <constraint firstItem="bub-Oc-T56" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="AMR-KP-DqW"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="21" y="56"/>
+        </view>
+    </objects>
+</document>

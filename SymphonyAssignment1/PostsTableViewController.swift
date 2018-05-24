@@ -8,12 +8,14 @@
 
 import UIKit
 
-class PostsTableViewController: UITableViewController {
+// View for list of posts for a given user
+
+class PostsTableViewController: BusyLoadingTableViewController {
     private let postsCellID = "PostCell"
     private var allPosts: [UAPPost] = []
     
     var user: UAPUser?
-    
+
     //MARK: - UIView Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,8 @@ class PostsTableViewController: UITableViewController {
             return
         }
         
+        // If the posts were dynamic then this should be called as
+        // a result of some action/trigger
         loadPosts(userId: userId)
     }
     
@@ -68,8 +72,14 @@ class PostsTableViewController: UITableViewController {
     //MARK: - Utility methods
     // Start loading posts for userId
     private func loadPosts(userId: Int) {
+        showBusyLoading()
+
         UsersAndPostsService.sharedInstance.getPosts(forUserId: userId) { (posts, errorString) in
             
+            DispatchQueue.main.async {
+                self.hideBusyLoading()
+            }
+
             if let errorString = errorString {
                 // Show popup to display error string
                 DispatchQueue.main.async {
@@ -84,8 +94,6 @@ class PostsTableViewController: UITableViewController {
             }
             
             if let posts = posts {
-                print("Posts count: \(posts.count)")
-                
                 self.allPosts = posts
                 DispatchQueue.main.async {
                     if let name = self.user?.name {
@@ -101,4 +109,7 @@ class PostsTableViewController: UITableViewController {
             }
         }
     }
+    
+    //MARK: - TODO
+    // variable height rows for posts
 }

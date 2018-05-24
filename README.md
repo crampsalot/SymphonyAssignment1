@@ -14,3 +14,26 @@ Here are the 2 APIs you’ll need:
  https://jsonplaceholder.typicode.com/posts?userId=<userID>
  
 Persistence of data is not needed for this exercise.
+
+Files:
+UsersAndPostsService.swift 
+ - Singleton class for fetching users, posts, images
+
+UsersTableViewController.swift 
+ - view for list of users.
+
+PostsTableViewController.swift 
+ - view for list of posts for a given user.
+
+BusyLoading/BusyLoadingView.xib 
+ - UI file for "Loading..." view
+
+BusyLoading/BusyLoadingView.swift 
+ - UIView class for "Loading ..." view
+
+BusyLoading/BusyLoadingTableViewController.swift 
+ - Custom tableview controller containing built in "Loading ..." 
+   label and activity indicator as background view.
+
+Image web API URL used:
+ https://api.adorable.io/avatars/SOME_SIZE/SOME_NAME.png

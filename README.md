@@ -17,25 +17,18 @@ Persistence of data is not needed for this exercise.
 
 Files:
 
-UsersAndPostsService.swift 
- - Singleton class for fetching users, posts, images
+ - UsersAndPostsService.swift: Singleton class for fetching users, posts, images
 
-UsersTableViewController.swift 
- - view for list of users.
+ - UsersTableViewController.swift: View for list of users.
 
-PostsTableViewController.swift 
- - view for list of posts for a given user.
+ - PostsTableViewController.swift: View for list of posts for a given user.
 
-BusyLoading/BusyLoadingView.xib 
- - UI file for "Loading..." view
+ - BusyLoading/BusyLoadingView.xib: UI file for "Loading..." view
 
-BusyLoading/BusyLoadingView.swift 
- - UIView class for "Loading ..." view
+ - BusyLoading/BusyLoadingView.swift: UIView class for "Loading ..." view
 
-BusyLoading/BusyLoadingTableViewController.swift 
- - Custom tableview controller containing built in "Loading ..." 
+ - BusyLoading/BusyLoadingTableViewController.swift: Custom tableview controller containing built in "Loading ..." 
    label and activity indicator as background view.
 
 Image web API URL used:
-  - https://api.adorable.io/avatars/SOME_SIZE/SOME_NAME.png
-Example: https://api.adorable.io/avatars/80/johndoe.png
+ - https://api.adorable.io/avatars/80/johndoe.png

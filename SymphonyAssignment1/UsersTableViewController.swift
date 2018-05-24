@@ -12,7 +12,11 @@ class UsersTableViewController: UITableViewController {
     private let cellID = "UserCell"
     private let SEGUE_SHOW_POSTS = "ShowPosts"
     
+    // Array of users fetched by loadUsers()
     private var allUsers: [UAPUser] = []
+    
+    // image cache, key = userName
+    // image fetch done in loadImage()
     private var userImagesCache: [String:UIImage?] = [:]
     
     // used to determine which user to pass on to PostsTableViewController

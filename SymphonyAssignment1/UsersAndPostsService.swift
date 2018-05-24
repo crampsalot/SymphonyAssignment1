@@ -6,37 +6,39 @@
 //  Copyright © 2018 Crampsalot LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-// Singleton class containing method to fetch list of users and list of posts
-// for a specific user.
+// Singleton class containing method to fetch from a web service:
+// - list of users
+// - list of posts for a specific user
+// - image for a given user name
 
 /*
  * Sample JSON for one user:
  *
  
  {
-  "id": 1,
-  "name": "Leanne Graham",
-  "username": "Bret",
-  "email": "Sincere@april.biz",
-  "address": {
-    "street": "Kulas Light",
-    "suite": "Apt. 556",
-    "city": "Gwenborough",
-    "zipcode": "92998-3874",
-    "geo": {
-      "lat": "-37.3159",
-      "lng": "81.1496"
-    }
-  },
-  "phone": "1-770-736-8031 x56442",
-  "website": "hildegard.org",
-  "company": {
-   "name": "Romaguera-Crona",
-   "catchPhrase": "Multi-layered client-server neural-net",
-   "bs": "harness real-time e-markets"
-  }
+ "id": 1,
+ "name": "Leanne Graham",
+ "username": "Bret",
+ "email": "Sincere@april.biz",
+ "address": {
+ "street": "Kulas Light",
+ "suite": "Apt. 556",
+ "city": "Gwenborough",
+ "zipcode": "92998-3874",
+ "geo": {
+ "lat": "-37.3159",
+ "lng": "81.1496"
+ }
+ },
+ "phone": "1-770-736-8031 x56442",
+ "website": "hildegard.org",
+ "company": {
+ "name": "Romaguera-Crona",
+ "catchPhrase": "Multi-layered client-server neural-net",
+ "bs": "harness real-time e-markets"
+ }
  }
  
  *
@@ -44,12 +46,12 @@ import Foundation
  *
  
  {
-  "userId": 1,
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+ "userId": 1,
+ "id": 1,
+ "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+ "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
  }
-
+ 
  */
 
 // Data structures to represent JSON elements
@@ -98,9 +100,10 @@ struct UAPPost: Decodable {
     let body: String?
 }
 
-// This singleton class contains 2 methods:
+// This singleton class contains 3 methods:
 // - getUsers()
 // - getPosts()
+// - getImage()
 //
 class UsersAndPostsService {
     // URL constants
@@ -113,7 +116,13 @@ class UsersAndPostsService {
     // more parameters and the userId parameter may not be the last one.
     private static let USER_ID_TOKEN = "USER_ID_TOKEN"
     private static let POSTS_URL_STRING = "https://jsonplaceholder.typicode.com/posts?userId=\(USER_ID_TOKEN)"
-
+    
+    // IMAGE_URL_STRING contains a token that is replaced with a user name.
+    // The '80' in the URL matches the size of the imageView where this
+    // image will be used.
+    private static let USER_NAME_TOKEN = "USER_NAME_TOKEN"
+    private static let IMAGE_URL_STRING = "https://api.adorable.io/avatars/80/USER_NAME_TOKEN.png"
+    
     static let sharedInstance = UsersAndPostsService()
     
     func getUsers(completion: ((_ users: [UAPUser]?, _ errorString: String?) -> Void)?) {
@@ -190,6 +199,46 @@ class UsersAndPostsService {
                 
                 completion?(nil, errorString)
             }
+            
+            }.resume()
+    }
+    
+    func getImage(forUsername userName: String, completion: ((_ image: UIImage?, _ userName: String, _ errorString: String?) -> Void)?) {
+        // Default name in case percent encoding fails
+        var percentEncodedUserName = "DefaultUserName"
+        
+        // Since this userName will be in a URL, make sure it is properly percent
+        // encoded
+        if let tmpUserName = userName.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            percentEncodedUserName = tmpUserName
+        }
+        
+        let theURLString = UsersAndPostsService.IMAGE_URL_STRING.replacingOccurrences(of: UsersAndPostsService.USER_NAME_TOKEN, with: "\(percentEncodedUserName)")
+        
+        //        print("Getting image with URL: ", theURLString)
+        guard let url = URL(string: theURLString) else {
+            completion?(nil, userName, "Error initializing url: " + theURLString)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let httpurlResponse = response as? HTTPURLResponse else {
+                completion?(nil, userName, "Response type is not HTTPURLResponse")
+                return
+            }
+            
+            guard httpurlResponse.statusCode == 200 else {
+                completion?(nil, userName, "HTTP status code is: \(httpurlResponse.statusCode). It should be 200")
+                return
+            }
+            
+            guard let data = data else {
+                completion?(nil, userName, "Data received back is nil")
+                return
+            }
+            
+            let image = UIImage(data: data)
+            completion?(image, userName, nil)
             
             }.resume()
     }

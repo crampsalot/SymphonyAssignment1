@@ -13,56 +13,37 @@ class UsersTableViewController: UITableViewController {
     private let SEGUE_SHOW_POSTS = "ShowPosts"
     
     private var allUsers: [UAPUser] = []
+    private var userImagesCache: [String:UIImage?] = [:]
+    
+    // used to determine which user to pass on to PostsTableViewController
     private var rowPressed = 0
     
+    //MARK: - UIView Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Fetch users when view is loaded
+        // If we expect the users list to change, then this should be
+        // called as a result of some trigger/action
+        loadUsers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        loadUsers()
     }
     
-    // Start loading users
-    private func loadUsers() {
-        UsersAndPostsService.sharedInstance.getUsers { (users, errorString) in
-            if let errorString = errorString {
-                DispatchQueue.main.async {
-                    DispatchQueue.main.async {
-                        let alertController = UIAlertController(title: "Error", message:
-                            "Failed to obtain users: \(errorString)", preferredStyle: UIAlertControllerStyle.alert)
-                        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
-                        
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                }
-                
-                return
-            }
-            
-            if let users = users {
-                print("Users count: \(users.count)")
-                self.allUsers = users
-                DispatchQueue.main.async { [unowned self] in
-                    // Update tableview with list of users
-                    self.tableView.reloadData()
-                }
-            }
-        }
+    //MARK: - UITableViewDelegate
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 130
     }
     
+    //MARK: - UITableViewDataSource
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allUsers.count
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 130
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -88,6 +69,17 @@ class UsersTableViewController: UITableViewController {
         // Phone
         if let label = cell.viewWithTag(4) as? UILabel, let phone = oneUser.phone {
             label.text = phone
+        }
+        
+        // Image
+        if let imageView = cell.viewWithTag(5) as? UIImageView, let username = oneUser.username {
+            if let image = userImagesCache[username] {
+                imageView.image = image
+                imageView.layer.cornerRadius = 8
+                imageView.clipsToBounds = true
+            } else {
+                loadImage(forUserName: username)
+            }
         }
         
         return cell
@@ -124,5 +116,83 @@ class UsersTableViewController: UITableViewController {
         default:
             print("Unknown segue")
         }
+    }
+    
+    //MARK: - Utility methods
+    
+    // Start loading users
+    private func loadUsers() {
+        UsersAndPostsService.sharedInstance.getUsers { (users, errorString) in
+            if let errorString = errorString {
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "Error", message:
+                        "Failed to obtain users: \(errorString)", preferredStyle: UIAlertControllerStyle.alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                
+                return
+            }
+            
+            if let users = users {
+                print("Users count: \(users.count)")
+                
+                // set list of users
+                // empty image cache
+                self.allUsers = users
+                self.userImagesCache = [:]
+                DispatchQueue.main.async {
+                    // Update tableview with list of users
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    // Start fetching image for user
+    private func loadImage(forUserName userName: String) {
+        UsersAndPostsService.sharedInstance.getImage(forUsername: userName) { (image, userName, errorString) in
+            if let errorString = errorString {
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "Error", message:
+                        "Failed to image for user \(userName): \(errorString)", preferredStyle: UIAlertControllerStyle.alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                
+                return
+            }
+            
+            DispatchQueue.main.async {
+                // Successfully got the image
+                
+                // Store it in cache
+                self.userImagesCache[userName] = image
+                
+                // Find index of user in table so that we can
+                // reload just that row and not the entire
+                // table
+                if let row = self.findIndex(forUserName: userName) {
+                    let indexPath = IndexPath(row: row, section: 0)
+                    print("Reloading row: \(userName)")
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                }
+            }
+        }
+    }
+    
+    // Find index of user with given username
+    // Can't use filter method here since we want the index
+    private func findIndex(forUserName userName: String) -> Int? {
+        for i in 0..<allUsers.count {
+            let user = allUsers[i]
+            if (user.username == userName) {
+                return i
+            }
+        }
+        
+        return nil
     }
 }

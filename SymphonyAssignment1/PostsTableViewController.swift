@@ -14,6 +14,7 @@ class PostsTableViewController: UITableViewController {
     
     var user: UAPUser?
     
+    //MARK: - UIView Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -28,6 +29,43 @@ class PostsTableViewController: UITableViewController {
         loadPosts(userId: userId)
     }
     
+
+    //MARK: - UITableViewDelegate
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 180
+    }
+    
+    //MARK: - UITableViewDataSource
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if (allPosts.count == 0) {
+            return 0
+        }
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return allPosts.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: postsCellID)!
+        let onePost = allPosts[indexPath.row]
+        
+        // Title
+        if let label = cell.viewWithTag(1) as? UILabel, let title = onePost.title {
+            label.text = title
+        }
+        
+        // Body
+        if let textView = cell.viewWithTag(2) as? UITextView, let body = onePost.body {
+            textView.text = body
+        }
+        
+        return cell
+    }
+    
+    //MARK: - Utility methods
     // Start loading posts for userId
     private func loadPosts(userId: Int) {
         UsersAndPostsService.sharedInstance.getPosts(forUserId: userId) { (posts, errorString) in
@@ -62,38 +100,5 @@ class PostsTableViewController: UITableViewController {
                 }
             }
         }
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        if (allPosts.count == 0) {
-            return 0
-        }
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allPosts.count
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 180
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: postsCellID)!
-        let onePost = allPosts[indexPath.row]
-        
-        // Title
-        if let label = cell.viewWithTag(1) as? UILabel, let title = onePost.title {
-            label.text = title
-        }
-        
-        // Body
-        if let textView = cell.viewWithTag(2) as? UITextView, let body = onePost.body {
-            textView.text = body
-        }
-        
-        return cell
     }
 }

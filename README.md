@@ -37,3 +37,5 @@ BusyLoading/BusyLoadingTableViewController.swift
 
 Image web API URL used:
  https://api.adorable.io/avatars/SOME_SIZE/SOME_NAME.png
+ eg
+ https://api.adorable.io/avatars/80/johndoe.png

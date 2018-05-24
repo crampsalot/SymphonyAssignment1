@@ -10,12 +10,13 @@ For this assignment, you will be writing a simple iOS app using Objective-C/Swif
 4. You can choose to display any image (randomized) for each user if you like.
 
 Here are the 2 APIs you’ll need: 
- https://jsonplaceholder.typicode.com/users 
- https://jsonplaceholder.typicode.com/posts?userId=<userID>
+ - https://jsonplaceholder.typicode.com/users 
+ - https://jsonplaceholder.typicode.com/posts?userId=USER_ID
  
 Persistence of data is not needed for this exercise.
 
 Files:
+
 UsersAndPostsService.swift 
  - Singleton class for fetching users, posts, images
 
@@ -36,6 +37,5 @@ BusyLoading/BusyLoadingTableViewController.swift
    label and activity indicator as background view.
 
 Image web API URL used:
- https://api.adorable.io/avatars/SOME_SIZE/SOME_NAME.png
- eg
- https://api.adorable.io/avatars/80/johndoe.png
+  - https://api.adorable.io/avatars/SOME_SIZE/SOME_NAME.png
+Example: https://api.adorable.io/avatars/80/johndoe.png

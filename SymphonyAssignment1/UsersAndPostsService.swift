@@ -213,6 +213,8 @@ class UsersAndPostsService {
     //   completionHandler(image: UIImage?, userName: String, errorString)
     // The user name is handed back in the completion handler to help
     // the storing of the image in a cache (eg using it as a key).
+    // The user index is also passed back in the completion handler where
+    // it can be used to identify which tableview cell to reload.
     func getImage(forUsername userName: String, userIndex: Int, completion: ((_ image: UIImage?, _ userName: String, _ userIndex: Int, _ errorString: String?) -> Void)?) {
         // Default name in case percent encoding fails
         var percentEncodedUserName = "DefaultUserName"
